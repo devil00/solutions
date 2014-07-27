@@ -141,7 +141,6 @@ class Conference(object):
                             self._get_min_cost_n_presenter_by_duration(
                                 presenters, possible_combinations)
 
-                   # print pcost, poss_presenters, pcost/len(poss_presenters), possible_combinations
 
                     len_poss_presenters = len(poss_presenters)
                     len_selected_presenters = len(selected_presenters)
@@ -177,14 +176,13 @@ class Conference(object):
                             is_multi = True
                             finalist_presenters.append(poss_presenters)
                             finalist_presenters.append(selected_presenters)
-                  
                         elif len_poss_presenters > len_selected_presenters:
                             is_multi = False
                             selected_presenters = poss_presenters
-          
+
         if not is_multi:
             finalist_presenters = []
-        if selected_presenters not in finalist_presenters :
+        if selected_presenters not in finalist_presenters:
             finalist_presenters.append(selected_presenters)
         if len(selected_presenters) == 0:
             raise ConferenceError("Not enough presenters.")
@@ -196,7 +194,7 @@ class Conference(object):
 if __name__ == "__main__":
     conf = Conference(3, 8, "./test_data/test3.csv")
 
-    (selected_presenters, cost) =  conf.arrange_conf()
+    (selected_presenters, cost) = conf.arrange_conf()
     selected_presenters = [str(p) for p in selected_presenters]
     print "Following are selected presenters {} "\
                "with incurred cost: {}".format(",".join(selected_presenters),
