@@ -20,11 +20,13 @@ Instructions to test or run
 
 2. Run the script `conference.py`
    python <script_name>  <input_data_file>
+
    python conference.py ./test_data/test4.csv
 
    or
   
    python conference.py 
+
    This will select default file test_file.csv
 
    output:
