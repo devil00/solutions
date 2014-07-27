@@ -22,6 +22,11 @@ Instructions to test or run
    python <script_name>  <input_data_file>
    python conference.py ./test_data/test4.csv
 
+   or
+  
+   python conference.py 
+   This will select default file test_file.csv
+
    output:
    "Following are selected presenters ['p27', 'p15', 'p29'] with
    incurred cost: 101"

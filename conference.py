@@ -36,6 +36,18 @@ def possible_slot_durations(total_duration, slot_limit):
         range(1, total_duration + 1),
         r=slot_limit) if sum(comb) == total_duration]
 
+def modify_data_format(data):
+    tmp = []
+    for d in data:
+        if isinstance(d, list):
+            data.remove(d)
+            tmp.append(d)
+
+    if all([isinstance(p, str) for p in data]):
+        tmp.append(data)
+
+    return tmp
+
 class Conference(object):
     """
     Used to arrange a conference as per the question.
@@ -136,16 +148,14 @@ class Conference(object):
                 if all(duration in duration_count and
                        duration_count[duration] >= count
                        for duration, count in  possible_combinations.items()):
-
+                       
                     (pcost, poss_presenters) = \
                             self._get_min_cost_n_presenter_by_duration(
                                 presenters, possible_combinations)
-
-
+                    
                     len_poss_presenters = len(poss_presenters)
                     len_selected_presenters = len(selected_presenters)
                     if pcost < min_cost:
-                        is_multi = False
                         if len_poss_presenters > len_selected_presenters:
                             selected_presenters = poss_presenters
                             min_cost = pcost
@@ -173,26 +183,24 @@ class Conference(object):
                         #Also, select mutiple combination of presenters with
                         #same cost and maximum presenters
                         if len_poss_presenters == len_selected_presenters:
-                            is_multi = True
-                            finalist_presenters.append(poss_presenters)
-                            finalist_presenters.append(selected_presenters)
+                            selected_presenters.append(poss_presenters)
                         elif len_poss_presenters > len_selected_presenters:
-                            is_multi = False
                             selected_presenters = poss_presenters
 
-        if not is_multi:
-            finalist_presenters = []
-        if selected_presenters not in finalist_presenters:
-            finalist_presenters.append(selected_presenters)
         if len(selected_presenters) == 0:
             raise ConferenceError("Not enough presenters.")
 
-        return (finalist_presenters, min_cost)
+        selected_presenters = modify_data_format(selected_presenters)
+        return (selected_presenters, min_cost)
 
 
 
 if __name__ == "__main__":
-    conf = Conference(3, 8, "./test_data/test3.csv")
+    try:
+        input_file = sys.argv[1]
+    except IndexError:
+        input_file = "test_file.csv"
+    conf = Conference(3, 8, input_file)
 
     (selected_presenters, cost) = conf.arrange_conf()
     selected_presenters = [str(p) for p in selected_presenters]
