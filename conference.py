@@ -4,15 +4,17 @@ A solution to Question(code) attached with mail.
 @author: Mayur Swami
 @date: 26/07/2014
 """
+
 from __future__ import division
-import csv
 from collections import Counter
 from itertools import combinations_with_replacement
 import sys
+import csv
+
 
 class ConferenceError(Exception):
     """
-    A base exception to rase error for :class: `Conference`.
+    A base exception to raise error for :class: `Conference`.
     """
     def __init__(self, message=""):
         self.message = message
@@ -36,6 +38,7 @@ def possible_slot_durations(total_duration, slot_limit):
         range(1, total_duration + 1),
         r=slot_limit) if sum(comb) == total_duration]
 
+
 def modify_data_format(data):
     tmp = []
     for d in data:
@@ -47,6 +50,8 @@ def modify_data_format(data):
         tmp.append(data)
 
     return tmp
+
+
 
 class Conference(object):
     """
@@ -107,18 +112,18 @@ class Conference(object):
         ppresenters = []
         pcost = 0
         for duration, count in durationcount.items():
-            #Sort in ascending order so that cost will go from min to max.
+            # Sort in ascending order so that cost will go from min to max.
             presenters_by_duration = sorted([presenter
                                              for presenter in all_presenters
                                              if int(presenter['duration']) ==
                                              duration],
                                             key=lambda k: k['cost'])
 
-            #return number of presenters(specified by count) having minimum cost
+            # return number of presenters(specified by count) having minimum cost
             ppresenters.extend([p['name'] for p
                                 in presenters_by_duration[:count]])
 
-            #Sum total cost by all the presenters.
+            # Sum total cost by all the presenters.
             pcost += sum([p['cost'] for p in presenters_by_duration[:count]])
         return (pcost, ppresenters)
 
@@ -131,10 +136,10 @@ class Conference(object):
         e.g., (['p2', 'p3', 'p4', 'p5'], 200)
         """
         (durations, presenters) = self._prep_data_from_csv()
-        #Counter to hole number of duration counts.
+        # Counter to hole number of duration counts.
         duration_count = Counter(durations)
 
-        #Initially assign min_cost to some large value to ease on comparison.
+        # Initially assign min_cost to some large value to ease on comparison.
         min_cost = sys.maxint
         selected_presenters = []
         finalist_presenters = []
@@ -160,12 +165,12 @@ class Conference(object):
                             selected_presenters = poss_presenters
                             min_cost = pcost
                         elif len_poss_presenters <= len_selected_presenters:
-                            #if this case happens then we should first
-                            #calculate the average cost per person
-                            #Choose possible presenter over selected
-                            #presennters
-                            #if average cost of poss presenters is less than
-                            #selected presenters
+                            # if this case happens then we should first
+                            # calculate the average cost per person
+                            # Choose possible presenter over selected
+                            # presennters
+                            # if average cost of poss presenters is less than
+                            # selected presenters
                             try:
                                 avg_cost_poss = pcost/len_poss_presenters
                                 avg_cost_selected = \
@@ -180,8 +185,8 @@ class Conference(object):
                                         if len_poss_presenters > 0\
                                         else selected_presenters
                     elif pcost == min_cost:
-                        #Also, select mutiple combination of presenters with
-                        #same cost and maximum presenters
+                        # Also, select mutiple combination of presenters with
+                        # same cost and maximum presenters
                         if len_poss_presenters == len_selected_presenters:
                             selected_presenters.append(poss_presenters)
                         elif len_poss_presenters > len_selected_presenters:
