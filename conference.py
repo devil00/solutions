@@ -18,7 +18,7 @@ class ConferenceError(Exception):
     """
     def __init__(self, message=""):
         self.message = message
-        super(Exception, self).__init__(message)
+        super(ConferenceError, self).__init__(message)
 
     def __str__(self):
         return repr(self.message)
